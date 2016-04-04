@@ -1,0 +1,15 @@
+<div class="row top-menu">
+
+	<div class="col-md-6">
+		<a href="{{url_for('showRestaurants')}}">
+			<span class="glyphicon glyphicon-home" aria-hidden="true"></span>Show All Restaurants
+		</a>
+	</div>
+	
+	<div class="col-md-6 text-right">
+    <p style="display:inline">Welcome, {{login_session['username']}}!</p>
+    <img src="{{login_session['picture']}}" style = "width: 50px; height: 50px;border-radius: 150px;-webkit-border-radius: 150px;-moz-border-radius: 150px;">
+    <a href="{{url_for('gdisconnect')}}">Log out</a>
+	</div>
+	
+</div>
