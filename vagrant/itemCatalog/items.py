@@ -33,14 +33,14 @@ session.add(Category1)
 session.commit()
 
 Item2 = Item(user_id=1, name="Cricket bat", description="English willow",
-                     price="$200.50", Category=Category1)
+                     price="$200.50", category=Category1)
 
 session.add(Item2)
 session.commit()
 
 
 Item1 = Item(user_id=1, name="Cricket leg guards", description="light weight leg guards for batting",
-                     price="$35.99", Category=Category1)
+                     price="$35.99", category=Category1)
 
 session.add(Item1)
 session.commit()
@@ -52,14 +52,14 @@ session.add(Category2)
 session.commit()
 
 Item2 = Item(user_id=1, name="Hockey stick", description="English willow",
-                     price="$100.50", Category=Category2)
+                     price="$100.50", category=Category2)
 
 session.add(Item2)
 session.commit()
 
 
 Item1 = Item(user_id=1, name="Hockey leg guards", description="light weight leg guards for Goal keeper",
-                     price="$35.99", Category=Category2)
+                     price="$35.99", category=Category2)
 
 session.add(Item1)
 session.commit()
