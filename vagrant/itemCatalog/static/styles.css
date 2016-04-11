@@ -1,4 +1,39 @@
-body {background-image:url('background.jpg')}
+    /* Remove the navbar's default margin-bottom and rounded borders */ 
+    .navbar {
+      margin-bottom: 0;
+      border-radius: 0;
+      background-color:#3B3D3F;
+    }
+    
+    /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+    .row.content {height: 450px}
+    
+    /* Set gray background color and 100% height */
+    .sidenav {
+      padding-top: 20px;
+      background-color: #f1f1f1;
+      height: 100%;
+    }
+    
+    
+    /* On small screens, set height to 'auto' for sidenav and grid */
+    @media screen and (max-width: 767px) {
+      .sidenav {
+        height: auto;
+        padding: 15px;
+      }
+      .row.content {height:auto;} 
+    }
+    
+.navbar-inverse {
+    border-color: #3B3D3F;
+}    
+.container .jumbotron, .container-fluid .jumbotron {border-radius:0px;}
+.sidenav {background-color:#007BD5;}
+.jumbotron {background-color:#007BD5; margin-bottom:0px; padding:20px;}
+
+body { background-color:#f6f6f6; color:whitesmoke;
+	}
 
 * {
 	font-family: "Helvetica Neue Bold", Roboto, Helvetica, Arial, sans-serif;
@@ -34,15 +69,40 @@ h3 {
 
  strong {
  	font-size: 16px;
- 	color: #7B7573;
+ 	color: whitesmoke;
  	line-height: 24px;
  }
 
- a {
- 	font-size: 14px;
- 	color: whitesmoke;
- 	line-height: 17px;
- }
+.row {
+    margin-left: -15px;
+    margin-right: 0px;
+}
+
+.bg-success p{
+	color:#007BD5
+}
+
+.panel-default>.panel-heading {
+    display: flex;
+}
+.col-sm-3 a {
+	background-color: #007BD5;
+	border: 1px solid #e3e3e3;
+	width: 100%;
+	text-decoration:none;
+	font-size: large;
+}
+
+.panel-primary p{
+	color:black;
+	padding-left: 15px;
+}
+
+.navbar-inverse .navbar-nav>li>a {
+    color: #9d9d9d;
+    display: -webkit-inline-box;
+}
+
 .padding-top {
 	padding-top: 30px;
 }
@@ -55,13 +115,17 @@ h3 {
 .padding-none {
 	padding: 0;
 }
+
 .btn {
-	padding: 20px;
-	margin: 0;
-	border-color: #9FB80A;
+	padding: 10px;
+	margin: 10px;
 	border-width: 2px;
-	color: #9FB80A;;
 }
+
+.btn-primary {
+    border-color: #357ebd;
+}
+
 .btn:hover {
 	border-color: #9FB80A;
 }
@@ -78,7 +142,8 @@ h3 {
 }
 .top-menu {
 	padding-top: 30px;
-	padding-bottom: 0px;
+	padding-bottom: 30px;
+	background-color:#007BD5;
 }
 .top-menu p {
 	line-height: 16px;
@@ -101,10 +166,10 @@ h3 {
 }
 .banner.main {
 	height: 150px;
-	background: url("/static/top-banner.jpg");
 	background-position: right;
 	background-repeat: no-repeat;
 	background-size: cover;
+	background-color:grey;
 }
 .banner.menu {
 	height: 150px;
@@ -126,10 +191,8 @@ u }
  	padding: 20px;
 }
 .menu-item {
-	background: #DDC974;
+	background: #007BD5;
 	padding: 20px;
-	margin: 20px;
-	margin-left: -20px;
 }
 
 .menu-item a {
@@ -153,10 +216,9 @@ u }
 	font-size: 14px;
 	color: #7B7573;
 	font-weight: 400;
-	margin-top: -20px;
 }
 .flash {
-	background-color: #98FB98;
+	background-color: #007BD5;
 	width:100%;
 	text-decoration: none;
 

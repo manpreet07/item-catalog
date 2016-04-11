@@ -1,15 +1,27 @@
-<div class="row top-menu">
-
-	<div class="col-md-6">
-		<a href="{{url_for('showRestaurants')}}">
-			<span class="glyphicon glyphicon-home" aria-hidden="true"></span>Show All Restaurants
-		</a>
-	</div>
-	
-	<div class="col-md-6 text-right">
-    <p style="display:inline">Welcome, {{login_session['username']}}!</p>
-    <img src="{{login_session['picture']}}" style = "width: 50px; height: 50px;border-radius: 150px;-webkit-border-radius: 150px;-moz-border-radius: 150px;">
-    <a href="{{url_for('gdisconnect')}}">Log out</a>
-	</div>
-	
+<div class="jumbotron">
+  <div class="container text-center">
+    <h1>Catalog Items</h1>      
+  </div>
 </div>
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+<!--       <a class="navbar-brand" href="#">Logo</a> -->
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="{{url_for('showCategories')}}">Categories</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><p style="display:inline"><span class="glyphicon glyphicon-user"></span>Hi, {{login_session['username'].upper()}}!</p>
+        <a href="{{url_for('gdisconnect')}}"><span class="glyphicon glyphicon-log-out"></span>Log out</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>

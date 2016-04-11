@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-
+		  <meta charset="utf-8">
+		  <meta name="viewport" content="width=device-width, initial-scale=1">
   <!--LOAD PRE-REQUISITES FOR GOOGLE SIGN IN -->
    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js">
   </script>
@@ -10,62 +11,87 @@
 
 <!-- END PRE-REQUISITES FOR GOOGLE SIGN IN -->
 		<link href='http://fonts.googleapis.com/css?family=Roboto:400,300,700' rel='stylesheet' type='text/css'>
-		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-		<link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
 
+
+
+		  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+		  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+		  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+		  		<link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
 </head>
 
 
 <body> 
-<div class="container">
-<div class="row top-menu">
-
-	<div class="col-md-6">
-		<a href="{{url_for('showRestaurants')}}">
-			<span class="glyphicon glyphicon-home" aria-hidden="true"></span>Show All Restaurants
-		</a>
-	</div>
-	
-</div> 
-	<div class="row top-menu">
-		<div class="col-md-10"></div>
-	</div>
-	<div class="row divider blue">
-		<div class="col-md-12"></div>
-	</div>
-	<div class="row banner main">
-		<div class="col-md-1"></div>
-		<div class="col-md-11 padding-none">
-			<h1>Restaurants</h1>
-		</div>
-	</div>
-	
-	
-	<div class="row padding-top padding-bottom">
-		<div class="col-md-1"></div>
-		<div class="col-md-10 padding-none">
-		<h3 style="color:whitesmoke">Sign to Restaurant Menu Item app</h3>
-		<div id="signInButton">
-		          <span class="g-signin"
-		            data-scope="openid email"
-		            data-clientid="432518987219-q6b6htk6o4ufc38amqb306828hdpl6lf.apps.googleusercontent.com"
-		            data-redirecturi="postmessage"
-		            data-accesstype="offline"
-		            data-cookiepolicy="single_host_origin"
-		            data-callback="signInCallback"
-		            data-approvalprompt="force">
-		          </span>
-		          <p>or</p>
-		          <!-- <button style="display:inherit"> -->
-					<fb:login-button scope="public_profile,email" onlogin="sendTokenToServer();">
-						<a href='javascript:sendTokenToServer()'>Login with Facebook</a>
-					</fb:login-button>
-        		<!-- </button> -->
-		</div>	
-		</div>
-	</div>
+<div class="jumbotron">
+  <div class="container text-center">
+    <h1>Catalog items</h1>      
+  </div>
 </div>
-		
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+     <!--  <a class="navbar-brand" href="#">Logo</a> -->
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#">Categories</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="" data-toggle="modal" data-target="#loginDialog"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+<div class="container">
+
+		<div class="col-md-11 padding-none">
+			<h1>Catalog Items</h1>
+		</div>	
+	<!-- Modal -->
+  <div class="modal fade" id="loginDialog" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Sign to Catalog Item app</h4>
+        </div>
+		<div class="modal-body">
+	          <div id="signInButton">
+			          <span class="g-signin"
+			            data-scope="openid email"
+			            data-clientid="432518987219-q6b6htk6o4ufc38amqb306828hdpl6lf.apps.googleusercontent.com"
+			            data-redirecturi="postmessage"
+			            data-accesstype="offline"
+			            data-cookiepolicy="single_host_origin"
+			            data-callback="signInCallback"
+			            data-approvalprompt="force">
+			          </span>
+			          <p>or</p>
+						<fb:login-button scope="public_profile,email" onlogin="sendTokenToServer();">
+							<a href='javascript:sendTokenToServer()'>Login with Facebook</a>
+						</fb:login-button>
+				</div>	
+	        </div>
+	        <div class="modal-footer">
+	          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+  
 <!-- GOOGLE PLUS SIGN IN BUTTON-->
 <script>
 function signInCallback(authResult) {
@@ -86,7 +112,7 @@ function signInCallback(authResult) {
 				if (result) {
 					$('#result').html('Login Successful!</br>' + result + '</br>Redirecting...')
 					setTimeout(function () {
-						window.location.href = "/restaurant";
+						window.location.href = "/category";
 					}, 4000);
 
 				} else if (authResult['error']) {
@@ -105,22 +131,21 @@ function signInCallback(authResult) {
 <!--FACEBOOK SIGN IN -->
 <script>
   window.fbAsyncInit = function() {
-  FB.init({
-    appId      : '975880455841892',
-    cookie     : true,  // enable cookies to allow the server to access 
-                        // the session
-    xfbml      : true,  // parse social plugins on this page
-    version    : 'v2.2' // use version 2.2
-  });
+    FB.init({
+      appId      : '1533779993592879',
+      xfbml      : true,
+      version    : 'v2.5'
+    });
   };
-  // Load the SDK asynchronously
-  (function(d, s, id) {
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return;
-    js = d.createElement(s); js.id = id;
-    js.src = "//connect.facebook.net/en_US/sdk.js";
-    fjs.parentNode.insertBefore(js, fjs);
-  }(document, 'script', 'facebook-jssdk'));
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+
   // Here we run a very simple test of the Graph API after login is
   // successful.  See statusChangeCallback() for when this call is made.
   function sendTokenToServer() {
@@ -139,7 +164,7 @@ function signInCallback(authResult) {
         if (result) {
           $('#result').html('Login Successful!</br>'+ result + '</br>Redirecting...')
          setTimeout(function() {
-          window.location.href = "/restaurant";
+          window.location.href = "/category";
          }, 4000);
           
       } else {

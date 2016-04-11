@@ -1,19 +1,6 @@
 {% extends "main.html" %}
 {% block content %}
 {% include "header.html" %}
-	<div class="row top-menu">
-		<div class="col-md-10"></div>
-<!-- <div class="col-md-2 text-right"><a href="{{url_for('showLogin')}}">Click Here to Log in </a></div>-->
-	</div>
-	<div class="row divider blue">
-		<div class="col-md-12"></div>
-	</div>
-	<div class="row banner main">
-		<div class="col-md-1"></div>
-		<div class="col-md-11 padding-none">
-			<h1>Restaurants</h1>
-		</div>
-	</div>
 
 <div class = 'flash'>
 		      {% with messages = get_flashed_messages() %}
@@ -28,29 +15,31 @@
     {% endwith %}
 
 </div>
-	
-	<div class="row padding-top padding-bottom">
-		<div class="col-md-1"></div>
-		<div class="col-md-10 padding-none">
-			<a href="{{url_for('newRestaurant')}}">
-				<button class="btn btn-default" id="new-restaurant">
-				
-					<span class="glyphicon glyphicon-cutlery" aria-hidden="true"></span>Add Restaurant
+	<div class="panel panel-default">
+  <div class="panel-heading">
+			<a href="{{url_for('newCategory')}}">
+				<button class="btn btn-primary" id="new-category">
+					Add category
 				</button>
-			</a>
-		
-				</div>
-				<div class="col-md-1"></div>
+			</a>		
 			</div>
-			{% for restaurant in restaurants %}
-				<a href = "{{url_for('showMenu', restaurant_id = restaurant.id)}}">
-					<div class="row">
-						<div class="col-md-1"></div>
-							<div class="col-md-10 restaurant-list">
-								<h3>{{restaurant.name}}</h3>
-							</div>
-						<div class="col-md-1"></div>
-					</div>
-				</a>
+			  <div class="panel-body">
+				<div class="row">	
+				
+			{% for key, val in categoryItems.iteritems() %}
+			<div class="col-sm-4" style="width:25%">
+			<div class="panel panel-primary" style="border-color:white">
+			<a href="{{url_for('showItem', category_id=key.id)}}" class="btn btn-info" role="button">
+			<div class="panel-heading">{{key.name}}</div>
+							<div class="panel-body">
+					  <p>{{val}} Items for this category </p>
+					  </div>
+					  </a>  
+					  </div>	
+					  </div>	
+					
 			{% endfor %}	
+							  </div>	
+							</div>
+							</div>
 			{% endblock %}
