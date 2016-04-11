@@ -29,7 +29,7 @@
 			{% for key, val in categoryItems.iteritems() %}
 			<div class="col-sm-4" style="width:25%">
 			<div class="panel panel-primary" style="border-color:white">
-			<a href="{{url_for('showItem', category_id=key.id)}}" class="btn btn-info" role="button">
+			<a href="{{url_for('showItem', category_id=key.id)}}" class="btn btn-info" role="button" style="background-color:#007BD5;border-color:white">
 			<div class="panel-heading">{{key.name}}</div>
 							<div class="panel-body">
 					  <p>{{val}} Items for this category </p>
