@@ -2,7 +2,7 @@ import json
 import random
 import string
 
-from flask import Flask, render_template, request, redirect, jsonify, url_for, flash
+from flask import Flask, render_template, request, redirect, jsonify, url_for, flash, g
 from flask import make_response
 from flask import session as login_session
 import httplib2
@@ -18,8 +18,6 @@ from database_setup import Base, Category, Item, User
 app = Flask(__name__)
 
 
-
-
 CLIENT_ID = json.loads(open('client_secrets.json', 'r').read())['web']['client_id']
 APPLICATION_NAME = "Category"
 
@@ -29,14 +27,48 @@ Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
-
+    
 # Create anti-forgery state token
 @app.route('/login')
-def showLogin():
+def showLogin():  
     state = ''.join(random.choice(string.ascii_uppercase + string.digits)
-                    for x in xrange(32))
+                        for x in xrange(32))
     login_session['state'] = state
     return render_template('login.html', STATE=state)
+   
+@app.route('/')   
+def allCateories():
+    categoryItems = {}
+    categories = session.query(Category).order_by(asc(Category.name))
+    for category in categories:
+        items = session.query(Item).filter_by(category_id = category.id).all()
+        if len(items):
+            categoryItems[category] = len(items)
+        else:
+            categoryItems[category] = 0 
+    return render_template('home.html', categoryItems=categoryItems)
+        
+#Show all Categories
+
+@app.route('/category/')
+def showCategories():
+    categoryItems = {}
+    if 'username' not in login_session:
+        return redirect(url_for('showLogin'))
+    else:    
+        creator = getUserInfo(login_session['user_id'])
+        categories = session.query(Category).filter_by(user_id = creator.id).order_by(asc(Category.name))
+        if(categories is not None):
+            for category in categories:
+                items = session.query(Item).filter_by(user_id = creator.id, category_id = category.id).all()
+                if len(items):
+                    categoryItems[category] = len(items)
+                else:
+                    categoryItems[category] = 0   
+            print categoryItems         
+            return render_template('categories.html', categoryItems=categoryItems, categories = categories, login_session=login_session)
+        else:
+            return render_template('categories.html', categoryItems=None, categories = categories, login_session=login_session)
 
 @app.route('/fbconnect', methods=['POST'])
 def fbconnect():
@@ -237,9 +269,10 @@ def gdisconnect():
             response = make_response(json.dumps('Failed to revoke token for given user.', 400))
             response.headers['Content-Type'] = 'application/json'
             return response
-    
+        
 #JSON APIs to view Category Information
 @app.route('/category/<int:category_id>/item/JSON')
+
 def CategoryitemJSON(category_id):
     Category = session.query(Category).filter_by(id = category_id).one()
     items = session.query(Item).filter_by(category_id = category_id).all()
@@ -247,6 +280,7 @@ def CategoryitemJSON(category_id):
 
 
 @app.route('/category/<int:category_id>/item/<int:item_id>/JSON')
+
 def ItemJSON(category_id, item_id):
     item_Item = session.query(Item).filter_by(id = item_id).one()
     return jsonify(item_Item = item_Item.serialize)
@@ -255,27 +289,6 @@ def ItemJSON(category_id, item_id):
 def CategoriesJSON():
     categories = session.query(Category).all()
     return jsonify(categories= [r.serialize for r in categories])
-
-
-#Show all Categorys
-
-@app.route('/')
-@app.route('/category/')
-def showCategories():
-    categoryItems = {}
-    if 'username' not in login_session:
-        return redirect(url_for('showLogin'))
-    else:    
-        creator = getUserInfo(login_session['user_id'])
-        categories = session.query(Category).filter_by(user_id = creator.id).order_by(asc(Category.name))
-        for category in categories:
-            items = session.query(Item).filter_by(user_id = creator.id, category_id = category.id).all()
-            if len(items):
-                categoryItems[category] = len(items)
-            else:
-                categoryItems[category] = 0   
-        print categoryItems         
-        return render_template('categories.html', categoryItems=categoryItems, categories = categories, login_session=login_session)
 
 #Create a new Category
 @app.route('/category/new/', methods=['GET','POST'])
@@ -305,7 +318,9 @@ def editCategory(category_id):
       if request.method == 'POST':
           if request.form['name']:
             editedCategory.name = request.form['name']
+            session.add(editedCategory)
             flash('Category Successfully Edited %s' % editedCategory.name)
+            session.commit()
             return redirect(url_for('showCategories'))
       else:
         return render_template('editCategory.html', category = editedCategory, login_session=login_session)
@@ -338,6 +353,16 @@ def showItem(category_id):
         items = session.query(Item).filter_by(user_id = creator.id, category_id = category.id).all()
         return render_template('item.html', items = items, category = category, login_session=login_session,creator= creator)
 
+@app.route('/category/<int:category_id>/')
+@app.route('/category/<int:category_id>/item/<int:item_id>/itemdescription/')
+def showItemDescription(category_id, item_id):
+    if 'username' not in login_session:
+        return redirect(url_for('showLogin'))
+    else:
+        creator = getUserInfo(login_session['user_id'])
+        category = session.query(Category).filter_by(user_id = login_session['user_id'], id = category_id).one()
+        item = session.query(Item).filter_by(user_id = creator.id, category_id = category.id, id=item_id).one()
+        return render_template('itemDescription.html', item = item, category = category, login_session=login_session,creator= creator)
 
 #Create a new item item
 @app.route('/category/<int:category_id>/item/new/',methods=['GET','POST'])
@@ -356,7 +381,7 @@ def newItem(category_id):
             else:
                 return redirect(url_for('showItem', category_id = category_id))
         else:
-            return render_template('newItem.html', category_id = category.id, login_session=login_session)
+            return render_template('newItem.html', category_id = category.id, category_name=category.name, login_session=login_session)
 
 #Edit a item item
 @app.route('/category/<int:category_id>/item/<int:item_id>/edit', methods=['GET','POST'])
@@ -377,7 +402,7 @@ def editItem(category_id, item_id):
                 editedItem.type = request.form['type']
             session.add(editedItem)
             session.commit() 
-            flash('item Item Successfully Edited')
+            flash('%s Successfully Edited' % (editedItem.name))
             return redirect(url_for('showItem', category_id = category.id))
         else:
             return render_template('editItem.html', category_id = category.id, item_id = editedItem.id, item = editedItem, login_session=login_session)
@@ -397,7 +422,7 @@ def deleteItem(category_id,item_id):
             flash('item Item Successfully Deleted')
             return redirect(url_for('showItem', category_id = category.id))
         else:
-            return render_template('deleteItem.html', item = itemToDelete, login_session=login_session)
+            return render_template('deleteItem.html', item = itemToDelete, category_id=category_id, login_session=login_session)
 
 if __name__ == '__main__':
     app.secret_key = 'super_secret_key'

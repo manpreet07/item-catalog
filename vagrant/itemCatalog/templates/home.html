@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+		  <meta charset="utf-8">
+		  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!--LOAD PRE-REQUISITES FOR GOOGLE SIGN IN -->
+   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js">
+  </script>
+
+<script src="//apis.google.com/js/platform.js?onload=start"> </script>
+
+<!-- END PRE-REQUISITES FOR GOOGLE SIGN IN -->
+		<link href='http://fonts.googleapis.com/css?family=Roboto:400,300,700' rel='stylesheet' type='text/css'>
+
+
+
+		  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+		  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+		  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+		  		<link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
+		  		<link rel=stylesheet type=text/css href="{{ url_for('static', filename='bootstrap-social.css') }}">
+</head>
+
+
+<body> 
+
+<div class="container">
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+     <a class="navbar-brand" href="{{url_for('allCateories')}}">Catalog items</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="{{url_for('showLogin')}}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="panel panel-default">
+  <div class="panel-heading"><h2>All Categories</h2>
+	</div>
+  <div class="panel-body">
+	<div class="row content">
+
+			<div class="col-sm-12">
+				      <!-- <div class="row"> -->
+				      {% if categoryItems %}
+					      {% for key, val in categoryItems.iteritems() %}
+					        <div class="col-sm-3">
+					            <a href="{{url_for('allCateories')}}" class="btn btn-info" role="button" style="background-color:#007BD5;border-color:white">
+								<p>{{key.name}}</p>
+										  <p><small>{{val}} Items for this category </small></p>
+										  </a>  
+					        </div>
+					       {% endfor %} 
+				       {% endif %} 
+			</div>	
+		</div>
+		</div>
+		</div>
+		</div>
+		<footer class="container-fluid text-center">
+		  <p></p>
+		</footer>
+  </body>
+
+  </html>

@@ -24,7 +24,7 @@
 			</a>
 			<a href="{{url_for('newItem', category_id = category.id )}}">
 				<button class="btn btn-primary" id="new-menu-item">
-					<span class="glyphicon glyphicon-glass" aria-hidden="true"></span>Add Category Item
+					<span class="glyphicon glyphicon-star" aria-hidden="true"></span>Add Category Item
 				</button>
 			</a>
 						<a href="{{url_for('deleteCategory', category_id = category.id )}}">
@@ -35,38 +35,49 @@
 
 	{% endif %}
 	</div>
-{% if items !=[] %}	
-  <div class="panel-body">
+
+ <div class="panel-body">
 <div class="row content">			
 			
 <!-- 				<figure class="creator">
 				<img src="{{ creator.picture}}">
 				<figcaption>{{ creator.name }}</figcaption>
 			</figure> -->
+			 {% if items !=[] %}
 			    <div class="col-sm-8 text-left"> 
 			    <div class="row">
+			   	
 					{% for i in items %}
 						    <div class="col-sm-4">
-						      <div class="panel panel-primary" data-toggle="tooltip" title="{{i.description}}">
-						        <div class="panel-heading">{{i.name}}</div>
+						      <div class="panel panel-primary">
+						        <div class="panel-heading"><a href="{{url_for('showItemDescription', category_id = category.id, item_id=i.id)}}" style="color:whitesmoke;text-decoration:none">{{i.name}}</a></div>
 						        <div class="panel-body">
 						        <img src="http://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image"></div>
-						        <!-- <p>{{i.description}}</p> -->
+						        
 								<p>${{i.price}}</p>
-								<!-- <p>{{i.type}}</p> -->
 								<div class="panel-footer text-right">
-								<a href='{{url_for('editItem', category_id = category.id, item_id=i.id ) }}'>Edit</a> | 
-								<a href='{{url_for('deleteItem', category_id = category.id, item_id=i.id ) }}'>Delete</a>
+								<a href="{{url_for('editItem', category_id = category.id, item_id=i.id ) }}">Edit</a> | 
+								<a href="{{url_for('deleteItem', category_id = category.id, item_id=i.id ) }}">Delete</a>
 						        </div>
 						    </div>   
 						    </div>
 					{% endfor %}
 				</div>
+			{% else %}
+			<div class="col-sm-12">
+					<h2>{{ category.name}} has no items</h2>
+					</div>
+			{% endif %}	
 		</div>		
-	{% else %}
-		<h2 style="color:007BD5">Category {{ category.name}} has no items</h2>
-		{% endif %}
 	</div>
 	</div>
 	</div>
 {% endblock %}
+<script>
+$(document).ready(function(){
+    $("#itemName").click(function(){
+    	$(".panel panel-primary").hide();
+    	$(".col-sm-4").append('<div><a href="{{url_for('showItems')}}">asasasa</a></div>')
+    }); 
+});
+</script>

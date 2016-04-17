@@ -1,8 +1,3 @@
-<div class="jumbotron">
-  <div class="container text-center">
-    <h1>Catalog Items</h1>      
-  </div>
-</div>
 
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
@@ -11,17 +6,31 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>                        
-      </button>
-<!--       <a class="navbar-brand" href="#">Logo</a> -->
+      </button>     
+      {% if 'username' in login_session %}  
+      <a class="navbar-brand" href="">Catalog items</a>
+      {% else %}
+      <a class="navbar-brand" href="{{url_for('allCateories')}}">Catalog items</a>
+      {% endif %}
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
         <li class="active"><a href="{{url_for('showCategories')}}">Categories</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><p style="display:inline"><span class="glyphicon glyphicon-user"></span>Hi, {{login_session['username'].upper()}}!</p>
-        <a href="{{url_for('gdisconnect')}}"><span class="glyphicon glyphicon-log-out"></span>Log out</a></li>
+        <li><a style="text-decoration:none"><span class="glyphicon glyphicon-user"></span>Hi, {{login_session['username'].upper()}}!</a></li>
+        <li><a href="{{url_for('gdisconnect')}}"><span class="glyphicon glyphicon-log-out"></span>Log out</a></li>
       </ul>
     </div>
   </div>
 </nav>
+	{% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-success">
+			    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			    {{ message }} 
+			 </div>
+        {% endfor %}
+        {% endif %}
+    {% endwith %}

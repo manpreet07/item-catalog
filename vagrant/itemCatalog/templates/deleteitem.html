@@ -1,15 +1,29 @@
 {% extends "main.html" %}
 {% block content %}
 {% include "header.html" %}
-<h2> Are you sure you want to delete {{item.name}}? </h2>
 
-<form action="#" method = 'post'>
-
-	<button type="submit" class="btn btn-primary delete" id="submit" type="submit">
-	<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>Delete</button>
-		<a href = '{{url_for('showCategories')}}'>
-		<button class="btn btn-primary delete" style="display:inline">
-		<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Cancel</button>
-	</a>
-</form>
+<div class="panel panel-default">
+  <div class="panel-heading"><h2>Delete Item</h2>	
+	</div>
+	  <div class="panel-body">
+		<div class="row content">
+			<div class="col-sm-12">
+			<h1><small>Are you sure you want to delete <mark>{{item.name}}</mark>?</small></h1>
+					  
+			<form class="form-horizontal" action="#" method = 'post' role="form">
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button type="submit" class="btn btn-primary delete" id="submit" type="submit">
+						<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>Delete</button>
+						<a href = "{{url_for('showItem', category_id = category_id)}}">
+							<button class="btn btn-primary delete">
+							<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Cancel</button>
+						</a>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+</div>			
 {% endblock %}
