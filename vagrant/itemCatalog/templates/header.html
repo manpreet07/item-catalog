@@ -26,11 +26,16 @@
 </nav>
 	{% with messages = get_flashed_messages() %}
       {% if messages %}
-        {% for message in messages %}
-            <div class="alert alert-success">
-			    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-			    {{ message }} 
-			 </div>
+        {% for message in messages %}		        
+         <script>
+					$(document).ready(function(){
+						  $( "#myAlert" ).fadeOut(3000);
+					});
+				</script>
+			     <div class="alert alert-success" id="myAlert" style="position: fixed;z-index: 999;width:1140px;font-size: x-large;display:block">
+				    <!-- <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> -->
+				    {{ message }} 
+				 </div>
         {% endfor %}
         {% endif %}
     {% endwith %}

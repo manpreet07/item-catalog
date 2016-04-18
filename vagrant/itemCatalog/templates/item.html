@@ -2,17 +2,6 @@
 {% block content %}
 {% include "header.html" %}
 
-<div class = 'bg-success text-center'>
-		      {% with messages = get_flashed_messages() %}
-			      {% if messages %}
-				        {% for message in messages %}
-				            <p> {{ message }} </p>
-				        {% endfor %}
-			       {% endif %}
-    		{% endwith %}
-
-</div>
-
 <div class="panel panel-default">
   <div class="panel-heading"><h2>{{category.name}} items</h2>
 
