@@ -4,6 +4,7 @@ from sqlalchemy.orm import sessionmaker
 
 from database_setup import Category, Base, Item, User
 
+
 engine = create_engine('sqlite:///catalogitem.db')
 # Bind the engine to the metadata of the Base class so that the
 # declaratives can be accessed through a DBSession instance
@@ -32,15 +33,15 @@ Category1 = Category(user_id=1, name="Cricket")
 session.add(Category1)
 session.commit()
 
-Item2 = Item(user_id=1, name="Cricket bat", description="English willow",
-                     price="$200.50", Category=Category1)
+Item2 = Item(user_id=1, name="SS Gladiator", type="Cricket bat", description="English willow",
+                     price="$200.50", category=Category1)
 
 session.add(Item2)
 session.commit()
 
 
-Item1 = Item(user_id=1, name="Cricket leg guards", description="light weight leg guards for batting",
-                     price="$35.99", Category=Category1)
+Item1 = Item(user_id=1, name="SS leg guards",  type="Cricket leg guard", description="light weight leg guards for batting",
+                     price="$35.99", category=Category1)
 
 session.add(Item1)
 session.commit()
@@ -51,15 +52,15 @@ Category2 = Category(user_id=1, name="Field Hockey")
 session.add(Category2)
 session.commit()
 
-Item2 = Item(user_id=1, name="Hockey stick", description="English willow",
-                     price="$100.50", Category=Category2)
+Item2 = Item(user_id=1, name="Protos hockey stick", type="Hockey stick", description="English willow",
+                     price="$100.50", category=Category2)
 
 session.add(Item2)
 session.commit()
 
 
-Item1 = Item(user_id=1, name="Hockey leg guards", description="light weight leg guards for Goal keeper",
-                     price="$35.99", Category=Category2)
+Item1 = Item(user_id=1, name="Protos Hockey leg guards", type="Hockey leg guards", description="light weight leg guards for Goal keeper",
+                     price="$35.99", category=Category2)
 
 session.add(Item1)
 session.commit()

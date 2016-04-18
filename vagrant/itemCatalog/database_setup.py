@@ -1,8 +1,11 @@
-from sqlalchemy import Column, ForeignKey, Integer, String
+from datetime import datetime
+
+from sqlalchemy import Column, ForeignKey, Integer, String, DateTime
+from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
-from sqlalchemy import create_engine
- 
+
+
 Base = declarative_base()
 
 class User(Base):
@@ -39,6 +42,7 @@ class Item(Base):
     price = Column(String(8))
     category_id = Column(Integer,ForeignKey('category.id'))
     category = relationship(Category)
+    type = Column(String(250))
     user_id = Column(Integer,ForeignKey('user.id'))
     user = relationship(User)
 
@@ -50,7 +54,7 @@ class Item(Base):
            'description'         : self.description,
            'id'         : self.id,
            'price'         : self.price,
-           'course'         : self.course,
+           'type'         : self.type,
        }
 
 

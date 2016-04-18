@@ -1,0 +1,14 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+
+<div class="panel panel-default">
+  <div class="panel-heading"><h2>Item Description</h2>
+	</div>
+  <div class="panel-body">
+<div class="container">		
+<h2><a href="{{url_for('showItem', category_id=category.id)}}">{{item.name}} </a><small>{{item.description}}</small></h2>	
+</div>
+</div>
+</div>
+{% endblock %}
