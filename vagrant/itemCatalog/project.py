@@ -9,8 +9,8 @@ import httplib2
 from oauth2client.client import FlowExchangeError
 from oauth2client.client import flow_from_clientsecrets
 import requests
-from sqlalchemy import create_engine, asc
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy import create_engine, asc, func
+from sqlalchemy.orm import sessionmaker, joinedload
 
 from database_setup import Base, Category, Item, User
 
@@ -272,7 +272,6 @@ def gdisconnect():
         
 #JSON APIs to view Category Information
 @app.route('/category/<int:category_id>/item/JSON')
-
 def CategoryitemJSON(category_id):
     Category = session.query(Category).filter_by(id = category_id).one()
     items = session.query(Item).filter_by(category_id = category_id).all()
@@ -280,7 +279,6 @@ def CategoryitemJSON(category_id):
 
 
 @app.route('/category/<int:category_id>/item/<int:item_id>/JSON')
-
 def ItemJSON(category_id, item_id):
     item_Item = session.query(Item).filter_by(id = item_id).one()
     return jsonify(item_Item = item_Item.serialize)
@@ -289,6 +287,21 @@ def ItemJSON(category_id, item_id):
 def CategoriesJSON():
     categories = session.query(Category).all()
     return jsonify(categories= [r.serialize for r in categories])
+
+@app.route('/categories.json')
+def allCategoriesItemsJSON():
+    categories = session.query(Category).all()
+    serializedCategories = []
+    for i in categories:
+        new_cat = i.serialize
+        items = session.query(Item).filter_by(category_id = i.id).all()
+        serializedItems = []
+        for j in items:
+            serializedItems.append(j.serialize)
+        new_cat['items'] = serializedItems
+        serializedCategories.append(new_cat)
+    return jsonify(categories=[serializedCategories])
+
 
 #Create a new Category
 @app.route('/category/new/', methods=['GET','POST'])
