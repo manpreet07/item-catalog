@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import Column, ForeignKey, Integer, String, DateTime
+from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
@@ -50,12 +50,10 @@ class Item(Base):
     def serialize(self):
        """Return object data in easily serializeable format"""
        return {
-           'name'         : self.name,
-           'description'         : self.description,
-           'id'         : self.id,
-           'price'         : self.price,
-           'type'         : self.type,
-       }
+            'id': self.id,
+            'name': self.name,
+            'description': self.description
+            }
 
 
 
