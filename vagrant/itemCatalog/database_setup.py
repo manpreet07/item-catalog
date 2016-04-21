@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
@@ -26,11 +24,11 @@ class Category(Base):
     
     @property
     def serialize(self):
-       """Return object data in easily serializeable format"""
-       return {
-           'name'         : self.name,
-           'id'           : self.id,
-       }
+        """Return object data in easily serializeable format"""
+        return {
+                'name'         : self.name,
+                'id'           : self.id,
+                }
  
 class Item(Base):
     __tablename__ = 'item'
@@ -48,16 +46,15 @@ class Item(Base):
 
     @property
     def serialize(self):
-       """Return object data in easily serializeable format"""
-       return {
-            'id': self.id,
-            'name': self.name,
-            'description': self.description
-            }
+        """Return object data in easily serializeable format"""
+        return {
+                'id': self.id,
+                'name': self.name,
+                'description': self.description
+                }
 
 
 
 engine = create_engine('sqlite:///catalogitem.db')
  
-
 Base.metadata.create_all(engine)
