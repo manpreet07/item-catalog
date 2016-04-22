@@ -66,14 +66,12 @@ def allCateories():
 #===============================================================================
 # Method returns all Categories for the user
 #===============================================================================
-@app.route('/category/')
+@app.route('/category/', methods=['GET'])
 @login_required
 def showCategories():
     cItems = {}
     creator = getUserInfo(login_session['user_id'])
     categories = session.query(Category).filter_by(user_id = creator.id).order_by(asc(Category.name))
-    print "categories"
-    print categories
     if(categories is not None):
         for category in categories:
             items = session.query(Item).filter_by(user_id = creator.id, category_id = category.id).all()
@@ -81,9 +79,8 @@ def showCategories():
                 cItems[category] = len(items)
             else:
                 cItems[category] = 0
-                return render_template('categories.html', categoryItems=cItems, login_session=login_session)
-    else:
-        return render_template('categories.html', categoryItems=None, login_session=login_session)
+        return render_template('categories.html', categoryItems=cItems, login_session=login_session)
+    return render_template('categories.html', categoryItems=None, login_session=login_session)
 
 #===============================================================================
 # Method to connect using facebook API authentication
@@ -356,13 +353,12 @@ def newCategory():
         if request.form['name']:
             newCategory = Category(user_id = login_session['user_id'], name = request.form['name'])
             session.add(newCategory)
-            flash('New Category %s Successfully Created' % newCategory.name)
             session.commit()
+            flash('New Category %s Successfully Created' % newCategory.name)
             return redirect(url_for('showCategories'))
         else:
             return redirect(url_for('showCategories'))
-    else:
-        return render_template('newCategory.html', login_session=login_session)
+    return render_template('newCategory.html', login_session=login_session)
 
 #===============================================================================
 # Method to edit category
