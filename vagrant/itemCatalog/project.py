@@ -86,8 +86,10 @@ def showCategories():
                 cItems[category] = len(items)
             else:
                 cItems[category] = 0
-        return render_template('categories.html', categoryItems=cItems, login_session=login_session)
-    return render_template('categories.html', categoryItems=None, login_session=login_session)
+        return render_template('categories.html', categoryItems=cItems,
+                               login_session=login_session)
+    return render_template('categories.html', categoryItems=None,
+                           login_session=login_session)
 
 
 @app.route('/fbconnect', methods=['POST'])
@@ -420,7 +422,8 @@ def editCategory(category_id):
             session.commit()
             return redirect(url_for('showCategories'))
     else:
-        return render_template('editCategory.html', category=editedCategory, login_session=login_session)
+        return render_template('editCategory.html', category=editedCategory,
+                               login_session=login_session)
 
 
 @app.route('/category/<int:category_id>/delete/', methods=['GET', 'POST'])
@@ -438,7 +441,8 @@ def deleteCategory(category_id):
         flash('%s Successfully Deleted' % categoryToDelete.name)
         return redirect(url_for('showCategories', category_id=category_id))
     else:
-        return render_template('deleteCategory.html', category=categoryToDelete, login_session=login_session)
+        return render_template('deleteCategory.html', category=categoryToDelete,
+                               login_session=login_session)
 
 
 @app.route('/category/<int:category_id>/')
@@ -456,7 +460,8 @@ def showItem(category_id):
     if(category is not None):
         items = session.query(Item).filter_by(
             user_id=creator.id, category_id=category.id).all()
-        return render_template('item.html', items=items, category=category, login_session=login_session, creator=creator)
+        return render_template('item.html', items=items, category=category,
+                               login_session=login_session, creator=creator)
     return redirect(url_for('showCategories'))
 
 
@@ -477,7 +482,8 @@ def showItemDescription(category_id, item_id):
     if(category is not None):
         item = session.query(Item).filter_by(
             user_id=creator.id, category_id=category.id, id=item_id).one()
-        return render_template('itemDescription.html', item=item, category=category, login_session=login_session, creator=creator)
+        return render_template('itemDescription.html', item=item, category=category,
+                               login_session=login_session, creator=creator)
     return redirect(url_for('showCategories'))
 
 
@@ -494,8 +500,10 @@ def newItem(category_id):
     if(category is not None):
         if request.method == 'POST':
             if request.form['name']:
-                newItem = Item(name=request.form['name'], description=request.form['description'], price=request.form[
-                               'price'], type=request.form['type'], category_id=category_id, user_id=login_session['user_id'])
+                newItem = Item(name=request.form['name'], description=request.form['description'],
+                               price=request.form['price'], type=request.form[
+                                   'type'], category_id=category_id,
+                               user_id=login_session['user_id'])
                 session.add(newItem)
                 session.commit()
                 flash('New item %s Item Successfully Created' % (newItem.name))
@@ -503,7 +511,8 @@ def newItem(category_id):
             else:
                 return redirect(url_for('showCategories'))
         else:
-            return render_template('newItem.html', category_id=category.id, category_name=category.name, login_session=login_session)
+            return render_template('newitem.html', category_id=category.id,
+                                   category_name=category.name, login_session=login_session)
     else:
         return redirect(url_for('showCategories'))
 
@@ -537,7 +546,7 @@ def editItem(category_id, item_id):
             flash('%s Successfully Edited' % (editedItem.name))
             return redirect(url_for('showItem', category_id=category.id))
         else:
-            return render_template('editItem.html', category_id=category.id,
+            return render_template('edititem.html', category_id=category.id,
                                    item_id=editedItem.id, item=editedItem,
                                    login_session=login_session)
     return redirect(url_for('showCategories'))
@@ -564,7 +573,7 @@ def deleteItem(category_id, item_id):
             flash('%s Successfully Deleted' % (itemToDelete.name))
             return redirect(url_for('showItem', category_id=category.id))
         else:
-            return render_template('deleteItem.html', item=itemToDelete,
+            return render_template('deleteitem.html', item=itemToDelete,
                                    category_id=category_id,
                                    login_session=login_session)
     return redirect(url_for('showCategories'))
