@@ -452,10 +452,12 @@ def showItem(category_id):
     """
     creator = getUserInfo(login_session['user_id'])
     category = session.query(Category).filter_by(
-        user_id=login_session['user_id'], id=category_id).one()
-    items = session.query(Item).filter_by(
-        user_id=creator.id, category_id=category.id).all()
-    return render_template('item.html', items=items, category=category, login_session=login_session, creator=creator)
+        user_id=login_session['user_id'], id=category_id).first()
+    if(category is not None):
+        items = session.query(Item).filter_by(
+            user_id=creator.id, category_id=category.id).all()
+        return render_template('item.html', items=items, category=category, login_session=login_session, creator=creator)
+    return redirect(url_for('showCategories'))
 
 
 @app.route('/category/<int:category_id>/')
@@ -472,7 +474,7 @@ def showItemDescription(category_id, item_id):
     creator = getUserInfo(login_session['user_id'])
     category = session.query(Category).filter_by(
         user_id=login_session['user_id'], id=category_id).first()
-    if(category):
+    if(category is not None):
         item = session.query(Item).filter_by(
             user_id=creator.id, category_id=category.id, id=item_id).one()
         return render_template('itemDescription.html', item=item, category=category, login_session=login_session, creator=creator)
@@ -489,7 +491,7 @@ def newItem(category_id):
     """
     category = session.query(Category).filter_by(
         user_id=login_session['user_id'], id=category_id).first()
-    if(category):
+    if(category is not None):
         if request.method == 'POST':
             if request.form['name']:
                 newItem = Item(name=request.form['name'], description=request.form['description'], price=request.form[
@@ -498,8 +500,12 @@ def newItem(category_id):
                 session.commit()
                 flash('New item %s Item Successfully Created' % (newItem.name))
                 return redirect(url_for('showItem', category_id=category_id))
+            else:
+                return redirect(url_for('showCategories'))
+        else:
             return render_template('newItem.html', category_id=category.id, category_name=category.name, login_session=login_session)
-    return redirect(url_for('showCategories'))
+    else:
+        return redirect(url_for('showCategories'))
 
 
 @app.route('/category/<int:category_id>/item/<int:item_id>/edit', methods=['GET', 'POST'])
@@ -549,16 +555,18 @@ def deleteItem(category_id, item_id):
     """
     category = session.query(Category).filter_by(
         user_id=login_session['user_id'], id=category_id).first()
-    if(category):
+    if(category is not None):
         itemToDelete = session.query(Item).filter_by(
-            user_id=login_session['user_id'], id=item_id).one()
+            user_id=login_session['user_id'], id=item_id).first()
         if request.method == 'POST':
             session.delete(itemToDelete)
             session.commit()
-            flash('item Item Successfully Deleted')
+            flash('%s Successfully Deleted' % (itemToDelete.name))
             return redirect(url_for('showItem', category_id=category.id))
         else:
-            return render_template('deleteItem.html', item=itemToDelete, category_id=category_id, login_session=login_session)
+            return render_template('deleteItem.html', item=itemToDelete,
+                                   category_id=category_id,
+                                   login_session=login_session)
     return redirect(url_for('showCategories'))
 
 if __name__ == '__main__':
