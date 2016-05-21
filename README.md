@@ -1,4 +1,4 @@
-# item-catalog
+# Item-Catalog
 
 Catalog Item App is integrated with third party user registration and authentication that provides a list of items within a variety of categories. You can CUD Categories and CUD Items to your categories
 
