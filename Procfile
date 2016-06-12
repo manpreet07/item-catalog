@@ -1,1 +1,1 @@
-web: gunicorn vagrant/itemCatalog/project:app
+web: gunicorn project:app
