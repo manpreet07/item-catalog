@@ -1,8 +1,6 @@
 bcrypt==2.0.0
 blinker==1.4
 cffi==1.6.0
-chardet==2.0.1
-command-not-found==0.2.44
 Flask==0.10.1
 Flask-Login==0.3.2
 Flask-Mail==0.9.1
