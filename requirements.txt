@@ -9,7 +9,6 @@ Flask-Security==1.7.5
 Flask-SQLAlchemy==2.1
 Flask-User==0.6.8
 Flask-WTF==0.12
-GnuPGInterface==0.3.2
 gunicorn==19.6.0
 heroku==0.1.4
 httplib2==0.9.2
