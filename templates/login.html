@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+		  <meta charset="utf-8">
+		  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!--LOAD PRE-REQUISITES FOR GOOGLE SIGN IN -->
+   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js">
+  </script>
+
+<script src="//apis.google.com/js/platform.js?onload=start"> </script>
+
+<!-- END PRE-REQUISITES FOR GOOGLE SIGN IN -->
+		<link href='http://fonts.googleapis.com/css?family=Roboto:400,300,700' rel='stylesheet' type='text/css'>
+
+
+
+		  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+		  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+		  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+		  		<link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
+		  		<link rel=stylesheet type=text/css href="{{ url_for('static', filename='bootstrap-social.css') }}">
+</head>
+
+
+<body> 
+
+<div class="container">
+
+<!-- <div class="jumbotron">
+  <div class="container text-center">
+    <h1>Catalog items</h1>      
+  </div>
+</div> -->
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+     <a class="navbar-brand" href="{{url_for('allCateories')}}">Catalog items</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="" data-toggle="modal" data-target="#loginDialog" id="myLogin"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<div class="panel panel-default">
+<!--   <div class="panel-heading"><h2 id="result">Sign in to Catalog App</h2>
+	</div> -->
+  <div class="panel-body" style="text-align: center; padding:150px;">
+	<div class="row content">
+
+<div class="col-sm-12">
+			<div class="modal-body">
+			<h1 id="result">Sign in to Catalog App</h1>
+		          <div id="signInButton">
+				          <span class="g-signin"
+				            data-scope="openid email"
+				            data-clientid="1022318341862-7v79t873093n9tcie7qo0o99qb3bqs5k.apps.googleusercontent.com"
+				            data-redirecturi="postmessage"
+				            data-accesstype="offline"
+				            data-cookiepolicy="single_host_origin"
+				            data-callback="signInCallback"
+				            data-approvalprompt="force">
+				          </span>
+				          <p style="color:black;">or</p>
+							<fb:login-button scope="public_profile,email" onlogin="sendTokenToServer();" data-size="xlarge">
+								<a href='javascript:sendTokenToServer()'>Login with Facebook</a>
+							</fb:login-button>
+					</div>	
+		        </div>
+	      </div>
+	      </div>
+	</div>	
+	</div>
+</div>
+	      
+		<footer class="container-fluid text-center">
+		  <p></p>
+		</footer>
+
+
+  
+<!-- GOOGLE PLUS SIGN IN BUTTON-->
+<script>
+function signInCallback(authResult) {
+	console.log(authResult)
+
+	if (authResult['code']) {
+		// Hide the sign-in button now that the user is authorized
+		$('#signInButton').hide();
+		$('#heading').hide();
+		// Send the one-time-use code to the server, if the server responds, write a 'login successful' message to the web page and then redirect back to the main restaurants page
+		$.ajax({
+			type : 'POST',
+			url : '/gconnect?state={{STATE}}',
+			processData : false,
+			data : authResult['code'],
+			contentType : 'application/octet-stream; charset=utf-8',
+			success : function (result) {
+				// Handle or verify the server response if necessary.
+				if (result) {
+					$('#result').html('Login Successful! ' + result + '...')
+					setTimeout(function () {
+						window.location.href = "/category";
+					}, 4000);
+
+				} else if (authResult['error']) {
+					console.log('There was an error: ' + authResult['error']);
+				} else {
+					$('#result').html('Failed to make a server-side call. Check your configuration and console.');
+				}
+			},
+		      error: function (xhr) {
+		          $('#result').html('Failed to login!');
+		        }
+		});
+	}
+}
+</script>
+
+<!--END GOOGLE PLUS SIGN IN BUTTON -->
+
+<!--FACEBOOK SIGN IN -->
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '1533779993592879',
+      xfbml      : true,
+      version    : 'v2.5'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+
+  // Here we run a very simple test of the Graph API after login is
+  // successful.  See statusChangeCallback() for when this call is made.
+  function sendTokenToServer() {
+	  $('#signInButton').hide();
+    var access_token = FB.getAuthResponse()['accessToken'];
+    FB.api('/me', function(response) {
+      console.log('Successful login for: ' + response.name);
+     $.ajax({
+      type: 'POST',
+      url: '/fbconnect?state={{STATE}}',
+      processData: false,
+      data: access_token,
+      contentType: 'application/octet-stream; charset=utf-8',
+      success: function(result) {
+        // Handle or verify the server response if necessary.
+        if (result) {
+          $('#result').html('Login Successful!</br>'+ result + '</br>Redirecting...')
+         setTimeout(function() {
+          window.location.href = "/category";
+         }, 4000);
+          
+      } else {
+        $('#result').html('Failed to make a server-side call. Check your configuration and console.');
+         }
+      }
+      
+  });
+    });
+  }
+</script>
+
+<!--END FACEBOOK SIGN IN -->
+  </body>
+
+  </html>

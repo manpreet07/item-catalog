@@ -1,0 +1,35 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+    
+<div class="panel panel-default">
+  <div class="panel-heading"><h2>All Categories</h2>
+          <a href="{{url_for('newCategory')}}">
+				<button class="btn btn-primary" id="new-category">
+					Add category
+				</button>
+			</a>	
+	</div>
+  <div class="panel-body">
+	<div class="row content">
+	    
+		<div class="col-sm-12">
+	      {% if categoryItems %}
+		      {% for key, val in categoryItems.iteritems() %}
+		        <div class="col-sm-3">
+		            <a href="{{url_for('showItem', category_id=key.id)}}" class="btn btn-info" role="button" style="background-color:#007BD5;border-color:white">
+					<p>{{key.name}}</p>
+							  <p>{{val}} Items for this category </p>
+							  </a>  
+		        </div>
+		       {% endfor %} 
+		       {% else %}
+		       	
+		            <h2>You do not have any Category</h2> 
+		       
+	       {% endif %} 
+			</div>
+		</div>
+	</div>
+</div>
+			{% endblock %}
