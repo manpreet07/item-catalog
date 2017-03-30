@@ -30,7 +30,7 @@ User1 = User(name=jsonData['user']['name'], email=jsonData[
              'user']['email'], picture=jsonData['user']['picture'])
 session.add(User1)
 session.commit()
-print "added user!"
+print ("added user!")
 
 # Create category Items
 for categories in jsonData['categories']:
@@ -38,7 +38,7 @@ for categories in jsonData['categories']:
         Category1 = Category(user_id=User1.id, name=category['name'])
         session.add(Category1)
         session.commit()
-print "added categories!"
+print ("added categories!")
 
 for categories in jsonData['categories']:
     for category in categories:
@@ -47,4 +47,4 @@ for categories in jsonData['categories']:
                          'description'], price=items['price'], category=Category1)
             session.add(item1)
             session.commit()
-print "added items!"
+print ("added items!")
