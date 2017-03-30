@@ -1,4 +1,8 @@
 *.vagrant
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
 .idea/FullStack.iml
 .idea/misc.xml
 .idea/modules.xml
