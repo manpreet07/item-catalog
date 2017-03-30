@@ -16,7 +16,7 @@ from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Category, Item, User
 
 
-app = Flask(__name__)
+application = Flask(__name__)
 
 
 CLIENT_ID = json.loads(
@@ -40,7 +40,7 @@ def login_required(f):
     return decorated_function
 
 
-@app.route('/login')
+@application.route('/login')
 def showLogin():
     """
     Create anti-forgery state token
@@ -52,7 +52,7 @@ def showLogin():
     return render_template('login.html', STATE=state)
 
 
-@app.route('/')
+@application.route('/')
 def allCateories():
     """
     Method returns all categories and number of items for that category
@@ -68,7 +68,7 @@ def allCateories():
     return render_template('home.html', categoryItems=categoryItems)
 
 
-@app.route('/category/', methods=['GET'])
+@application.route('/category/', methods=['GET'])
 @login_required
 def showCategories():
     """
@@ -92,7 +92,7 @@ def showCategories():
                            login_session=login_session)
 
 
-@app.route('/fbconnect', methods=['POST'])
+@application.route('/fbconnect', methods=['POST'])
 def fbconnect():
     """
     Method to connect using facebook API authentication
@@ -152,7 +152,7 @@ def fbconnect():
     return "Welcome %s" % login_session['username']
 
 
-@app.route('/gconnect', methods=['POST'])
+@application.route('/gconnect', methods=['POST'])
 def gconnect():
     """
     Method to connect using Google API authentication
@@ -280,7 +280,7 @@ def getUserID(email):
         return None
 
 
-@app.route('/disconnect')
+@application.route('/disconnect')
 def gdisconnect():
     """
     Method to disconnect
@@ -329,7 +329,7 @@ def gdisconnect():
             return response
 
 
-@app.route('/category/<int:category_id>/item/JSON')
+@application.route('/category/<int:category_id>/item/JSON')
 def CategoryitemJSON(category_id):
     """
     JSON API to view Category Information
@@ -342,7 +342,7 @@ def CategoryitemJSON(category_id):
     return jsonify(Items=[i.serialize for i in items])
 
 
-@app.route('/category/<int:category_id>/item/<int:item_id>/JSON')
+@application.route('/category/<int:category_id>/item/<int:item_id>/JSON')
 def ItemJSON(category_id, item_id):
     """
     JSON API to view category items
@@ -356,7 +356,7 @@ def ItemJSON(category_id, item_id):
     return jsonify(item_Item=item_Item.serialize)
 
 
-@app.route('/category/JSON')
+@application.route('/category/JSON')
 def CategoriesJSON():
     """
     JSON API to view categories 
@@ -366,7 +366,7 @@ def CategoriesJSON():
     return jsonify(categories=[r.serialize for r in categories])
 
 
-@app.route('/categories.json')
+@application.route('/categories.json')
 def allCategoriesItemsJSON():
     """
     JSON API to view all categories and items
@@ -385,7 +385,7 @@ def allCategoriesItemsJSON():
     return jsonify(categories=[serializedCategories])
 
 
-@app.route('/category/new/', methods=['GET', 'POST'])
+@application.route('/category/new/', methods=['GET', 'POST'])
 @login_required
 def newCategory():
     """
@@ -404,7 +404,7 @@ def newCategory():
     return render_template('newCategory.html', login_session=login_session)
 
 
-@app.route('/category/<int:category_id>/edit/', methods=['GET', 'POST'])
+@application.route('/category/<int:category_id>/edit/', methods=['GET', 'POST'])
 @login_required
 def editCategory(category_id):
     """
@@ -426,7 +426,7 @@ def editCategory(category_id):
                                login_session=login_session)
 
 
-@app.route('/category/<int:category_id>/delete/', methods=['GET', 'POST'])
+@application.route('/category/<int:category_id>/delete/', methods=['GET', 'POST'])
 @login_required
 def deleteCategory(category_id):
     """
@@ -445,8 +445,8 @@ def deleteCategory(category_id):
                                login_session=login_session)
 
 
-@app.route('/category/<int:category_id>/')
-@app.route('/category/<int:category_id>/item/')
+@application.route('/category/<int:category_id>/')
+@application.route('/category/<int:category_id>/item/')
 @login_required
 def showItem(category_id):
     """
@@ -465,8 +465,8 @@ def showItem(category_id):
     return redirect(url_for('showCategories'))
 
 
-@app.route('/category/<int:category_id>/')
-@app.route('/category/<int:category_id>/item/<int:item_id>/itemdescription/')
+@application.route('/category/<int:category_id>/')
+@application.route('/category/<int:category_id>/item/<int:item_id>/itemdescription/')
 @login_required
 def showItemDescription(category_id, item_id):
     """
@@ -487,7 +487,7 @@ def showItemDescription(category_id, item_id):
     return redirect(url_for('showCategories'))
 
 
-@app.route('/category/<int:category_id>/item/new/', methods=['GET', 'POST'])
+@application.route('/category/<int:category_id>/item/new/', methods=['GET', 'POST'])
 @login_required
 def newItem(category_id):
     """
@@ -517,7 +517,7 @@ def newItem(category_id):
         return redirect(url_for('showCategories'))
 
 
-@app.route('/category/<int:category_id>/item/<int:item_id>/edit', methods=['GET', 'POST'])
+@application.route('/category/<int:category_id>/item/<int:item_id>/edit', methods=['GET', 'POST'])
 @login_required
 def editItem(category_id, item_id):
     """
@@ -552,7 +552,7 @@ def editItem(category_id, item_id):
     return redirect(url_for('showCategories'))
 
 
-@app.route('/category/<int:category_id>/item/<int:item_id>/delete', methods=['GET', 'POST'])
+@application.route('/category/<int:category_id>/item/<int:item_id>/delete', methods=['GET', 'POST'])
 @login_required
 def deleteItem(category_id, item_id):
     """
@@ -579,6 +579,6 @@ def deleteItem(category_id, item_id):
     return redirect(url_for('showCategories'))
 
 if __name__ == '__main__':
-    app.secret_key = 'super_secret_key'
-    app.debug = True
-    app.run()
+    application.secret_key = 'super_secret_key'
+    application.debug = True
+    application.run()
