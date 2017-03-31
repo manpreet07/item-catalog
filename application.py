@@ -585,7 +585,7 @@ def deleteItem(category_id, item_id):
                                    login_session=login_session)
     return redirect(url_for('showCategories'))
 
+application.secret_key = 'super_secret_key'
+
 if __name__ == '__main__':
-    application.secret_key = 'super_secret_key'
-    application.debug = True
-    application.run()
+    application.run(debug=True)
