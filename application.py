@@ -586,6 +586,7 @@ def deleteItem(category_id, item_id):
     return redirect(url_for('showCategories'))
 
 application.secret_key = 'super_secret_key'
+application.debug = True
 
-if __name__ == '__main__':
-    application.run(debug=True)
+# if __name__ == '__main__':
+#     application.run(host='0.0.0.0', port=80, debug=True)
