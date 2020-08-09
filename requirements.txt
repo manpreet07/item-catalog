@@ -1,7 +1,7 @@
 appdirs==1.4.3
 Flask>=1.0.0
 gunicorn==19.7.1
-httplib2==0.10.3
+httplib2>=0.18.0
 itsdangerous==0.24
 Jinja2>=2.10.1
 MarkupSafe==1.0
